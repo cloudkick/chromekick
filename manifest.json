@@ -1,0 +1,31 @@
+{
+  "name": "chromekick",
+  "version": "0.1",
+  "description": "Used for working on Cloudkick",
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "page_action": {
+    "default_icon": "icon48.png", // optional
+    "default_title": "chromekick",    // optional; shown in tooltip
+    "default_popup": "popup.html"    // optional
+  },
+  "background_page": "background.html",
+  "permissions": [
+    "http://*.cloudkick.com/*",
+    "https://*.cloudkick.com/*",
+    "http://127.0.0.1/*",
+    "http://ck.dev/*",
+    "tabs",
+    "bookmarks",
+    "unlimitedStorage",
+    "cookies",
+    "history",
+    "idle",
+    "management",
+    "notifications",
+    "contextMenus"
+  ]
+}

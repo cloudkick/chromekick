@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type='text/javascript'>
+      function check_for_cloudkick(tabId, changeInfo, tab) {
+        if (tab.url.indexOf('cloudkick') > -1) {
+          chrome.pageAction.show(tabId);
+        }
+      };
+      chrome.tabs.onUpdated.addListener(check_for_cloudkick);
+    </script>
+  </head>
+</html>

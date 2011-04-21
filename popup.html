@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type='text/css'>
+      body {
+        width: 300px;
+        font-family: "Helvetica", "Arial", sans-serif;
+        font-size: 16px;
+      }
+      div a {
+        cursor: pointer;
+      }
+      div a:hover {
+        text-decoration: underline;
+      }
+      .mi {
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div class='mi'><a id='javascript_debug'>Toggle JS debugging</a></div>
+      <div class='mi'><a id='css_debug'>Toggle CSS debugging</a></div>
+    </div>
+    <script type='text/javascript' src='jquery-1.5.2-min.js'></script>
+    <script type='text/javascript'>
+      $(document).ready(function () {
+        $('#javascript_debug').click(function (event) {
+          console.log('moo');
+        });
+        $('#css_debug').click(function (event) {
+          console.log('moo');
+        });
+      });
+    </script>
+  </body>
+</html>
+
