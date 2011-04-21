@@ -28,10 +28,10 @@
       var bg = chrome.extension.getBackgroundPage();
       $(document).ready(function () {
         $('#javascript_debug').click(function (event) {
-          console.log('moo');
+          bg.toggle_js_debug();
         });
         $('#css_debug').click(function (event) {
-          console.log('moo');
+          bg.toggle_css_debug();
         });
       });
     </script>

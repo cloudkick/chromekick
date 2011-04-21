@@ -1,12 +1,133 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script type='text/javascript' src='underscore.js'></script>
     <script type='text/javascript'>
-      function check_for_cloudkick(tabId, changeInfo, tab) {
+      var current_tab_id = null;
+      /**
+       * @param {!number} tab_id
+       * @param {!Object} change_info
+       * @param {!Object} tab
+       */
+      function check_for_cloudkick (tab_id, change_info, tab) {
         if (tab.url.indexOf('cloudkick') > -1) {
-          chrome.pageAction.show(tabId);
+          chrome.pageAction.show(tab_id);
+          current_tab_id = tab_id;
         }
       };
+      /**
+       * Toggles the JAVASCRIPT_DBUG=True option for the tab.
+       */
+      function toggle_js_debug () {
+        toggle_debug('JAVASCRIPT');
+      }
+      /**
+       * Toggles the CSS_DBUG=True option for the tab.
+       */
+      function toggle_css_debug () {
+        toggle_debug('CSS');
+      }
+      /**
+       * @param {!string} type
+       * Toggles a debug type query parameter.
+       */
+      function toggle_debug (type) {
+        chrome.tabs.get(current_tab_id, function (tab) {;
+          var url, parts;
+          url = tab.url;
+          parts = get_url_parts(url);
+          if (url.indexOf(type + '_DEBUG=True') !== -1) {
+            parts.query = _.filter(parts.query, function (query_parts) {
+              if (query_parts.key === type + '_DEBUG') {
+                return false;
+              }
+              return true;
+            });
+          } else {
+            if (!parts.query) {
+              parts['query'] = [];
+            }
+            parts.query.push({
+              key: type + '_DEBUG',
+              value: 'True'
+            });
+          }
+          chrome.tabs.update(current_tab_id, {url: create_url(parts)});
+        });
+      }
+      /**
+       * Create a new URL from a set or properties.
+       * @param {!Object} obj
+       * @return {!string} The new URL
+       */
+      function create_url (obj) {
+        var url, query_parts;
+        console.log('create_url from', obj);
+        url = obj.protocol + obj.host;
+        if (obj.path) {
+          url += obj.path;
+        }
+        console.log('url.query', url.query);
+        if (obj.query && obj.query.length) {
+          url += '?';
+          query_parts = [];
+          _.each(obj.query, function (parts) {
+            query_parts.push(parts.key + '=' + parts.value);
+          });
+          url += query_parts.join('&');
+        }
+        if (obj.hash) {
+          url += obj.hash;
+        }
+        return url;
+      }
+
+      /**
+       * @param {!string} url
+       * @return {!Object}
+       */
+      function get_url_parts (url) {
+        var protocol, index, index, rest, query, query_string,
+          query_parts, hash, host, path;
+        console.log(url);
+        index = url.indexOf('://') + 3;
+        protocol = url.substr(0, index);
+        rest = url.substr(index);
+        console.log('protocol', protocol);
+        index = rest.indexOf('#');
+        if (index !== -1) {
+          hash = rest.substr(index);
+          rest = rest.substr(0, index);
+        }
+        index = rest.indexOf('?');
+        if (index !== -1) {
+          query_string = rest.substr(index + 1);
+          rest = rest.substr(0, index);
+          query_parts = query_string.split('&');
+          query = [];
+          _.each(query_parts, function (part) {
+            var parts, obj;
+            parts = part.split('=');
+            obj = {key: parts[0]};
+            if (parts.length > 1) {
+              obj.value = parts[1];
+            }
+            query.push(obj)
+          });
+        }
+        index = rest.indexOf('/');
+        if (index !== -1) {
+          host = rest.substr(0, index);
+          path = rest.substr(index);
+        }
+        return {
+          protocol: protocol,
+          host: host,
+          path: path,
+          hash: hash,
+          query: query
+        }
+      }
       chrome.tabs.onUpdated.addListener(check_for_cloudkick);
     </script>
   </head>
