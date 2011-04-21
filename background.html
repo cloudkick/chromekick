@@ -3,7 +3,6 @@
   <head>
     <script type='text/javascript' src='underscore.js'></script>
     <script type='text/javascript'>
-      var current_tab_id = null;
       /**
        * @param {!number} tab_id
        * @param {!Object} change_info
@@ -13,16 +12,17 @@
         if (tab.url.indexOf('www.cloudkick.com') > -1) {
           chrome.pageAction.show(tab_id);
         }
-        current_tab_id = tab_id;
       };
       /**
        * Toggles easy info on cloudkick overview page.
       */
       function toggle_easy_info () {
-        chrome.tabs.sendRequest(current_tab_id,
-          {topic: "toggle_easy_info"},
-          function(response) { /*do nuthin'*/ }
-        );
+        chrome.tabs.getSelected(null, function(tab) {
+          chrome.tabs.sendRequest(tab.id,
+            {topic: "toggle_easy_info"},
+            function(response) { /*do nuthin'*/ }
+          );
+        });
       }
       /**
        * Toggles the JAVASCRIPT_DBUG=True option for the tab.
@@ -41,27 +41,29 @@
        * Toggles a debug type query parameter.
        */
       function toggle_debug (type) {
-        chrome.tabs.get(current_tab_id, function (tab) {;
-          var url, parts;
-          url = tab.url;
-          parts = get_url_parts(url);
-          if (url.indexOf(type + '_DEBUG=True') !== -1) {
-            parts.query = _.filter(parts.query, function (query_parts) {
-              if (query_parts.key === type + '_DEBUG') {
-                return false;
+        chrome.tabs.getSelected(null, function(selected_tab) {
+          chrome.tabs.get(selected_tab.id, function (tab) {;
+            var url, parts;
+            url = tab.url;
+            parts = get_url_parts(url);
+            if (url.indexOf(type + '_DEBUG=True') !== -1) {
+              parts.query = _.filter(parts.query, function (query_parts) {
+                if (query_parts.key === type + '_DEBUG') {
+                  return false;
+                }
+                return true;
+              });
+            } else {
+              if (!parts.query) {
+                parts['query'] = [];
               }
-              return true;
-            });
-          } else {
-            if (!parts.query) {
-              parts['query'] = [];
+              parts.query.push({
+                key: type + '_DEBUG',
+                value: 'True'
+              });
             }
-            parts.query.push({
-              key: type + '_DEBUG',
-              value: 'True'
-            });
-          }
-          chrome.tabs.update(current_tab_id, {url: create_url(parts)});
+            chrome.tabs.update(selected_tab.id, {url: create_url(parts)});
+          });
         });
       }
       /**
