@@ -12,9 +12,18 @@
       function check_for_cloudkick (tab_id, change_info, tab) {
         if (tab.url.indexOf('cloudkick') > -1) {
           chrome.pageAction.show(tab_id);
-          current_tab_id = tab_id;
         }
+        current_tab_id = tab_id;
       };
+      /**
+       * Toggles easy info on cloudkick overview page.
+      */
+      function toggle_easy_info () {
+        chrome.tabs.sendRequest(current_tab_id,
+          {topic: "toggle_easy_info"},
+          function(response) { /*do nuthin'*/ }
+        );
+      }
       /**
        * Toggles the JAVASCRIPT_DBUG=True option for the tab.
        */

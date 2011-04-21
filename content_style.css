@@ -1,0 +1,8 @@
+.easy_info {
+  background: white;
+  border: 2px solid black;
+}
+.easy_info span {
+  display: inline-block;
+  padding: 5px;
+}

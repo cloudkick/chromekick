@@ -29,8 +29,19 @@
     "contextMenus"
   ],
   "content_scripts": [
-    "jquery-1.5.2-min.js",
-    "underscore.js",
-    "contentscript.js"
+    {
+      "matches": [
+        "http://*.cloudkick.com/*",
+        "https://*.cloudkick.com/*",
+        "http://127.0.0.1/*",
+        "http://ck.dev/*"
+      ],
+      "css": ["content_style.css"],
+      "js": [
+        "jquery-1.5.2-min.js",
+        "underscore.js",
+        "contentscript.js"
+      ]
+    }
   ]
 }
