@@ -137,6 +137,15 @@
           query: query
         }
       }
+      /**
+       * Custom CK node search
+       */
+      chrome.omnibox.onInputEntered.addListener(function(query) {
+        chrome.tabs.getSelected(null, function(tab) {
+          var url = 'https://www.cloudkick.com/a/cloudk1ck/#!filter/1//';
+          chrome.tabs.update(tab.id, {url: url + query});
+        });
+      });
       chrome.tabs.onUpdated.addListener(check_for_cloudkick);
     </script>
   </head>

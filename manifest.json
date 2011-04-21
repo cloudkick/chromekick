@@ -2,6 +2,7 @@
   "name": "chromekick",
   "version": "0.1",
   "description": "Used for working on Cloudkick",
+  "omnibox": { "keyword" : "ck" },
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",
