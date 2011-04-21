@@ -10,7 +10,7 @@
        * @param {!Object} tab
        */
       function check_for_cloudkick (tab_id, change_info, tab) {
-        if (tab.url.indexOf('cloudkick') > -1) {
+        if (tab.url.indexOf('www.cloudkick.com') > -1) {
           chrome.pageAction.show(tab_id);
         }
         current_tab_id = tab_id;
