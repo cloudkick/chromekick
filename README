@@ -1,0 +1,26 @@
+Current features:
+
+reveal ip and node id information for every visible node on the new overview
+enter a query for cloudkick nodes in the chrome address bar/omnibox 
+toggle javascript debug mode (requires Charles)
+toggle css debug mdoe (requires Charles)
+
+To install it if you're interested:
+
+git clone git@github.com:cloudkick/chromekick.git
+open chrome://extensions/ in chrome
+Toggle developer mode on the top right
+Click 'load unpacked extension'
+Navigate to the chromekick folder git created and click 'select'
+
+That's it!
+
+An extension is better than doing this in the app because we can do whatever
+we want and don't have to worry about breaking our app or maintaining or
+making it pretty.
+
+If you want to contribute or have an idea feel free to contribute.
+
+There's a style sheet 'content_style.css' you can edit to make any changes
+you want anywhere on cloudkick and it will only be visible to people who have
+the extension installed.
